@@ -1,0 +1,80 @@
+<!-- sentiment_app/templates/sentiment_app/analyze.html -->
+{% extends 'sentiment_app/base.html' %}
+{% load static %}
+
+{% block title %}Analisar Texto{% endblock %}
+
+{% block content %}
+    <div class="bg-light p-4 p-md-5 rounded mb-4 shadow-sm">
+        <h1>Análise de Sentimento</h1>
+        <p class="lead">Insira um texto, em inglês, abaixo para analisar seu sentimento (positivo, negativo ou neutro) e obter uma pontuação de polaridade.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Analisar Novo Texto</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.text_to_analyze.label_tag }}
+                            {{ form.text_to_analyze }} {# Renderiza o widget <textarea> #}
+                            {% if form.text_to_analyze.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.text_to_analyze.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Analisar Sentimento</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if analysis_result %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm result-card">
+                <div class="card-header">Resultado da Análise</div>
+                <div class="card-body">
+                    {% if analysis_result.error %}
+                        <div class="alert alert-warning" role="alert">
+                           {{ analysis_result.error }}
+                        </div>
+                    {% else %}
+                        <h5 class="card-title">Texto Analisado:</h5>
+                        <blockquote class="blockquote mb-3">
+                           <p class="mb-0 fst-italic">"{{ analysis_result.text }}"</p>
+                        </blockquote>
+                        <hr>
+                        <h5 class="card-title">Sentimento:</h5>
+                        <p class="card-text">
+                            <span class="badge fs-6 text-bg-{{ analysis_result.sentiment_class }}">{{ analysis_result.sentiment }}</span>
+                        </p>
+                        <h5 class="card-title mt-3">Pontuação de Polaridade:</h5>
+                        <p class="card-text">
+                            {{ analysis_result.polarity }}
+                            <br>
+                            <small class="text-muted">(Varia de -1.0 [Muito Negativo] a 1.0 [Muito Positivo])</small>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Adiciona classe de erro do Bootstrap se o campo for inválido
+    const textInput = document.getElementById('{{ form.text_to_analyze.id_for_label }}');
+    if (textInput && document.querySelector('.invalid-feedback')) {
+        textInput.classList.add('is-invalid');
+    }
+</script>
+{% endblock %}

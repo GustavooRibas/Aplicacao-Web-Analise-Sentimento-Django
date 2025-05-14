@@ -1,0 +1,43 @@
+<!-- sentiment_app/templates/sentiment_app/login.html -->
+{% extends 'sentiment_app/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="card-title text-center mb-4">Login</h2>
+                {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <small>Usuário ou senha inválidos. Tente novamente.</small>
+                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+                {% if next %}
+                    {% if not user.is_authenticated %}
+                    <p class="text-center text-info small mb-3">Por favor, faça login para acessar a página solicitada.</p>
+                    {% endif %}
+                {% endif %}
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Usuário</label>
+                        <input type="text" name="username" class="form-control" id="id_username" required autofocus>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Senha</label>
+                        <input type="password" name="password" class="form-control" id="id_password" required>
+                    </div>
+                    <div class="d-grid gap-2 mt-4">
+                       <button type="submit" class="btn btn-primary">Entrar</button>
+                    </div>
+                    <input type="hidden" name="next" value="{{ next }}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
