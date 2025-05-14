@@ -1,6 +1,8 @@
 # Aplicação Web de Análise de Sentimento com Django
 
-## Autor: Gustavo Rodrigues Ribeiro
+## Autor
+
+- [*Gustavo Rodrigues Ribeiro*](https://github.com/GustavooRibas)
 
 ## Visão Geral
 
@@ -222,3 +224,7 @@ Esta aplicação serve como uma base funcional. Diversas melhorias e expansões 
 *   **Página não encontrada (404):**
     *   Verifique se as URLs estão corretamente definidas em `sentiment_project/urls.py` e `sentiment_app/urls.py`.
     *   Certifique-se de que o servidor de desenvolvimento (`python manage.py runserver`) está em execução.
+
+## Contato
+
+- E-mail: gustavooriibeiro.ofc@hotmail.com
